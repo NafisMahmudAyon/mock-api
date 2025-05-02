@@ -130,7 +130,7 @@ export async function GET(request) {
 
 	const getRandomImageUrl = async (gender, index) => {
 		try {
-			const query = gender === "Female" ? "woman portrait" : "man portrait";
+			const query = gender === "Female" ? `woman portrait ${index}` : `man portrait ${index}`;
 			const res = await fetch(
 				`https://api.pexels.com/v1/search?query=${encodeURIComponent(
 					query
