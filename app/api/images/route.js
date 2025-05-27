@@ -50,9 +50,7 @@ const getRandomImageUrl = async (category, size, index) => {
 		// Fallback response when no photos are found
 		return {
 			id: index + 1,
-			url: `https://placehold.co/400x400?text=${encodeURIComponent(query)}+${
-				index + 1
-			}`,
+			url: `https://placehold.co/400x400?text=${encodeURIComponent(query)}`,
 			size: size,
 			category: category,
 			alt: `Placeholder for ${query} ${index + 1}`,
@@ -61,9 +59,7 @@ const getRandomImageUrl = async (category, size, index) => {
 		// Error response
 		return {
 			id: index + 1,
-			url: `https://placehold.co/400x400?text=${encodeURIComponent(category)}+${
-				index + 1
-			}`,
+			url: `https://placehold.co/400x400?text=${encodeURIComponent(category)}`,
 			size: size,
 			category: category,
 			alt: `Error loading image for ${category} ${index + 1}`,
