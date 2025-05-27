@@ -18,73 +18,58 @@ const getRandomImageUrl = async (category, size, index) => {
 			}
 		);
 		const data = await res.json();
+
 		if (data.photos && data.photos.length > 0) {
-      switch (size) {
-        case "original":
-          return {id: index + 1, url: data.photos[0].src.original, size: "original", category: category,alt: data.photos[0].alt};
-        case "portrait":
-          return {
-						id: index + 1,
-						url: data.photos[0].src.original,
-						size: "original",
-						category: category,
-						alt: data.photos[0].alt,
-					};
-        case "landscape":
-          return {
-						id: index + 1,
-						url: data.photos[0].src.landscape,
-						size: "landscape",
-						category: category,
-						alt: data.photos[0].alt,
-					};
-        case "tiny":
-          return {
-						id: index + 1,
-						url: data.photos[0].src.tiny,
-						size: "tiny",
-						category: category,
-						alt: data.photos[0].alt,
-					};
-        case "small":
-          return {
-						id: index + 1,
-						url: data.photos[0].src.small,
-						size: "small",
-						category: category,
-						alt: data.photos[0].alt,
-					};
-        case "medium":
-          return {
-						id: index + 1,
-						url: data.photos[0].src.medium,
-						size: "medium",
-						category: category,
-						alt: data.photos[0].alt,
-					};
-        case "large":
-          return {
-						id: index + 1,
-						url: data.photos[0].src.large,
-						size: "large",
-						category: category,
-						alt: data.photos[0].alt,
-					};
-        default:``
-          return {
-						id: index + 1,
-						url: data.photos[0].src.medium,
-						size: "medium",
-						category: category,
-						alt: data.photos[0].alt,
-					};
-      }
+			const photo = data.photos[0];
+			const baseObj = {
+				id: index + 1,
+				category: category,
+				alt: photo.alt || `Image of ${category} ${index + 1}`,
+			};
+
+			switch (size) {
+				case "original":
+					return { ...baseObj, url: photo.src.original, size: "original" };
+				case "portrait":
+					return { ...baseObj, url: photo.src.portrait, size: "portrait" };
+				case "landscape":
+					return { ...baseObj, url: photo.src.landscape, size: "landscape" };
+				case "tiny":
+					return { ...baseObj, url: photo.src.tiny, size: "tiny" };
+				case "small":
+					return { ...baseObj, url: photo.src.small, size: "small" };
+				case "medium":
+					return { ...baseObj, url: photo.src.medium, size: "medium" };
+				case "large":
+					return { ...baseObj, url: photo.src.large, size: "large" };
+				default:
+					return { ...baseObj, url: photo.src.medium, size: "medium" };
+			}
 		}
-		return `https://placehold.co/400x400?text=${query.replace(/ /g, "+")}+${
-			index + 1
-		}`;
+
+		// Fallback response when no photos are found
+		return {
+			id: index + 1,
+			url: `https://placehold.co/400x400?text=${encodeURIComponent(query)}+${
+				index + 1
+			}`,
+			size: size,
+			category: category,
+			alt: `Placeholder for ${query} ${index + 1}`,
+		};
 	} catch (err) {
-		return `https://placehold.co/400x400?text=${category}+${index + 1}`;
+		// Error response
+		return {
+			id: index + 1,
+			url: `https://placehold.co/400x400?text=${encodeURIComponent(category)}+${
+				index + 1
+			}`,
+			size: size,
+			category: category,
+			alt: `Error loading image for ${category} ${index + 1}`,
+			error: true,
+			message: err.message,
+		};
 	}
 };
 
