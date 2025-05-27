@@ -6,7 +6,7 @@ size is like "small", "medium", "large", "original", "portrait", "landscape", "t
 
 const getRandomImageUrl = async (category, size, index) => {
 	try {
-		const query = `${category} ${index}`;
+		const query = `${category} ${index+1}`;
 		const res = await fetch(
 			`https://api.pexels.com/v1/search?query=${encodeURIComponent(
 				query
